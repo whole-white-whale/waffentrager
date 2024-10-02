@@ -13,3 +13,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Event model
 - Event extraction chain
 - Storage class
+- Mongo storage implementation
