@@ -19,3 +19,7 @@ class Event(BaseModel):
     )
 
     location: Optional[str] = Field(default=None, description="A location of the event")
+
+
+class EventList(BaseModel):
+    events: list[Event] = Field(description="A list of the events")

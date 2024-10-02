@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 pydantic = "^2.9.2"
 python = "^3.12"
+langchain-core = "^0.3.8"
 
 [build-system]
 requires = ["poetry-core"]
