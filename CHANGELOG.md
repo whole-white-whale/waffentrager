@@ -16,3 +16,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mongo storage implementation
 - Mongo service
 - Waffentrager class
+- Telegram bot

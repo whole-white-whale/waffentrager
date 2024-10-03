@@ -1,0 +1,22 @@
+chat_model:
+  ollama:
+    model_name: "qwen2.5:1.5b"
+
+storage:
+  mongo:
+    host: "localhost"
+    port: 27017
+    database_name: "development"
+
+logging:
+  version: 1
+
+  handlers:
+    stderr:
+      class: "logging.StreamHandler"
+      level: "INFO"
+
+  root:
+    level: "INFO"
+    handlers:
+      - "stderr"

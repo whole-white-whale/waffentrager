@@ -6,6 +6,8 @@ authors = ["Sergey Kirichenko <whole-white-whale@yandex.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
+aiogram = "^3.13.1"
+confuse = "^2.0.1"
 langchain-core = "^0.3.8"
 pydantic = "^2.9.2"
 pymongo = "^4.10.1"
