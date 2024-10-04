@@ -17,7 +17,7 @@ class Waffentrager:
         self.storage = storage
 
     def add_events_from_message(
-        self, message: str, date: datetime.date, time: datetime.time
+        self, user_name: str, message: str, date: datetime.date, time: datetime.time
     ) -> dict[EventId, Event]:
         result = {}
 
@@ -31,19 +31,19 @@ class Waffentrager:
 
         if event_list:
             for event in event_list.events:
-                event_id = self.storage.add_event(event)
+                event_id = self.storage.add_event(user_name, event)
                 result[event_id] = event
 
         return result
 
-    def list_events(self) -> dict[EventId, Event]:
+    def list_events(self, user_name: str) -> dict[EventId, Event]:
         result = {}
 
-        for event_id in self.storage.list_events():
-            event = self.storage.get_event(event_id)
+        for event_id in self.storage.list_events(user_name):
+            event = self.storage.get_event(user_name, event_id)
             result[event_id] = event
 
         return result
 
-    def remove_event(self, event_id: EventId):
-        self.storage.remove_event(event_id)
+    def remove_event(self, user_name: str, event_id: EventId):
+        self.storage.remove_event(user_name, event_id)

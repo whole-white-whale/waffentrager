@@ -51,7 +51,7 @@ dispatcher = Dispatcher()
 async def list_events(message: Message):
     logging.info("Listing events")
 
-    result = waffentrager.list_events()
+    result = waffentrager.list_events(user_name=str(message.chat.id))
 
     for event_id, event in result.items():
         await answer_event(message, event_id, event)
@@ -67,7 +67,10 @@ async def add_events_from_message(message: Message):
     now = datetime.datetime.now()
 
     result = waffentrager.add_events_from_message(
-        message=message.text, date=now.date(), time=now.time()
+        user_name=str(message.chat.id),
+        message=message.text,
+        date=now.date(),
+        time=now.time(),
     )
 
     for event_id, event in result.items():
@@ -76,14 +79,17 @@ async def add_events_from_message(message: Message):
 
 @dispatcher.callback_query()
 async def remove_event(query: CallbackQuery):
-    event_id = query.data
-
-    if event_id is None:
+    if query.data is None:
         return
+
+    event_id = EventId(query.data)
 
     logging.info("Removing an event: %s", event_id)
 
-    waffentrager.remove_event(event_id)
+    if query.message is not None:
+        waffentrager.remove_event(
+            user_name=str(query.message.chat.id), event_id=event_id
+        )
 
     await query.answer("The event has been removed.")
 
