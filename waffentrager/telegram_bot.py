@@ -32,7 +32,8 @@ telegram_bot_token = os.environ["TELEGRAM_BOT_TOKEN"]
 dictConfig(config=cast(dict, configuration["logging"].get(dict)))
 
 chat_model = ChatOllama(
-    model=cast(str, configuration["chat_model"]["ollama"]["model_name"].get(str))
+    base_url=cast(str, configuration["chat_model"]["ollama"]["url"].get(str)),
+    model=cast(str, configuration["chat_model"]["ollama"]["model_name"].get(str)),
 )
 
 storage = MongoStorage(
