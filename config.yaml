@@ -5,9 +5,9 @@ chat_model:
 
 storage:
   mongo:
-    host: "localhost"
+    host: "mongo"
     port: 27017
-    database_name: "development"
+    database_name: "production"
 
 logging:
   version: 1
