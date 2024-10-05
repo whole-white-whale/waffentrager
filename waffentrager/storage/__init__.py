@@ -10,6 +10,10 @@ EventId = NewType("EventId", str)
 
 class Storage(abc.ABC):
     @abc.abstractmethod
+    def list_users(self) -> list[str]:
+        pass
+
+    @abc.abstractmethod
     def add_event(self, user_name: str, event: Event) -> EventId:
         pass
 

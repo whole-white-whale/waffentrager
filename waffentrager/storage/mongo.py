@@ -3,7 +3,6 @@ from typing import Optional
 from bson import ObjectId
 
 from pymongo import MongoClient
-from pymongo.synchronous.collection import Collection
 from pymongo.synchronous.database import Database
 
 from waffentrager.event import Event
@@ -21,6 +20,9 @@ class MongoStorage(Storage):
     @property
     def database(self) -> Database:
         return self.client[self.database_name]
+
+    def list_users(self) -> list[str]:
+        return self.database.list_collection_names()
 
     def add_event(self, user_name: str, event: Event) -> EventId:
         document = event.model_dump(mode="json")
