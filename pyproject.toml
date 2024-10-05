@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 aiogram = "^3.13.1"
+apscheduler = "^3.10.4"
 confuse = "^2.0.1"
 langchain-core = "^0.3.8"
 langchain-ollama = "^0.2.0"

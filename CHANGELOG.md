@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple user interaction
 - Docker image
 - Logo
+- Notification sending
 
 ## [0.1.0]
 

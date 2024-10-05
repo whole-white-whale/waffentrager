@@ -16,6 +16,9 @@ class Waffentrager:
         self.event_extraction_chain = create_event_extraction_chain(chat_model)
         self.storage = storage
 
+    def list_users(self) -> list[str]:
+        return self.storage.list_users()
+
     def add_events_from_message(
         self, user_name: str, message: str, date: datetime.date, time: datetime.time
     ) -> dict[EventId, Event]:

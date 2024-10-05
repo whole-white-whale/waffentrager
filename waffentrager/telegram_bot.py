@@ -17,6 +17,7 @@ from aiogram.types import (
     Message,
 )
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from confuse import Configuration
 from langchain_ollama.chat_models import ChatOllama
 
@@ -45,7 +46,24 @@ storage = MongoStorage(
 )
 
 waffentrager = Waffentrager(chat_model, storage)
+
+bot = Bot(token=telegram_bot_token)
 dispatcher = Dispatcher()
+
+
+async def check_event_dates():
+    for user_name in waffentrager.list_users():
+        chat_id = int(user_name)
+
+        result = waffentrager.list_events(user_name)
+
+        for event_id, event in result.items():
+            if event.date == datetime.date.today() + datetime.timedelta(days=1):
+                await send_event(chat_id, event_id, event)
+
+
+scheduler = AsyncIOScheduler()
+scheduler.add_job(check_event_dates, "cron", hour=20)
 
 
 @dispatcher.message(Command("list"))
@@ -55,7 +73,7 @@ async def list_events(message: Message):
     result = waffentrager.list_events(user_name=str(message.chat.id))
 
     for event_id, event in result.items():
-        await answer_event(message, event_id, event)
+        await send_event(message.chat.id, event_id, event)
 
 
 @dispatcher.message()
@@ -75,7 +93,7 @@ async def add_events_from_message(message: Message):
     )
 
     for event_id, event in result.items():
-        await answer_event(message, event_id, event)
+        await send_event(message.chat.id, event_id, event)
 
 
 @dispatcher.callback_query()
@@ -95,7 +113,7 @@ async def remove_event(query: CallbackQuery):
     await query.answer("The event has been removed.")
 
 
-async def answer_event(message: Message, event_id: EventId, event: Event):
+async def send_event(chat_id: int, event_id: EventId, event: Event):
     inline_keyboard_button = InlineKeyboardButton(text="Remove", callback_data=event_id)
 
     inline_keyboard = [
@@ -105,7 +123,7 @@ async def answer_event(message: Message, event_id: EventId, event: Event):
     inline_keyboard_markup = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
     text = format_event(event)
 
-    await message.answer(text, reply_markup=inline_keyboard_markup)
+    await bot.send_message(chat_id, text, reply_markup=inline_keyboard_markup)
 
 
 def format_event(event: Event) -> str:
@@ -126,7 +144,7 @@ def format_event(event: Event) -> str:
 
 
 async def main():
-    bot = Bot(token=telegram_bot_token)
+    scheduler.start()
     await dispatcher.start_polling(bot)
 
 
